@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("user")
@@ -27,6 +28,11 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> listAllByOrderByName() {
         return ResponseEntity.ok().body(service.listAllByOrderByName());
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Optional<UserResponseDTO>> listById(@PathVariable("userId") UUID id) {
+        return ResponseEntity.ok().body(service.listById(id));
     }
 
     @PostMapping
