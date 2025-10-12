@@ -41,7 +41,7 @@ public class User {
 
     @Column(name = "nr_telefone")
     @NotNull(message = "Número de telefone deve ser preenchido")
-    private int phone;
+    private String phone;
 
     @Column(name = "ds_email")
     @Email @NotNull(message = "Email deve ser preenchido")

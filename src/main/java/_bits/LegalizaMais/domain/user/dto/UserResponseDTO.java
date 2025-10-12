@@ -16,7 +16,7 @@ public class UserResponseDTO {
     private PersonType personType;
     private String document;
     private int ddd;
-    private int phone;
+    private String phone;
     private String email;
     private String cep;
     private int addressNumber;
