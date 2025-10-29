@@ -8,6 +8,8 @@ import _bits.LegalizaMais.exception.ExampleException;
 import _bits.LegalizaMais.exception.UserException;
 import _bits.LegalizaMais.repository.ExampleRepository;
 import _bits.LegalizaMais.repository.UserRepository;
+import _bits.LegalizaMais.utils.CnpjValidator;
+import _bits.LegalizaMais.utils.CpfValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,10 +51,10 @@ public class UserService {
         }
 
         // Validação adicional para CPF/CNPJ conforme tipo
-        if (user.getPersonType() == PersonType.FISICA && !isValidCPF(user.getDocument())) {
+        if (user.getPersonType() == PersonType.FISICA && !CpfValidator.isValid(user.getDocument())) {
             throw new UserException("Invalid CPF");
         }
-        if (user.getPersonType() == PersonType.JURIDICA && !isValidCNPJ(user.getDocument())) {
+        if (user.getPersonType() == PersonType.JURIDICA && !CnpjValidator.isValid(user.getDocument())) {
             throw new UserException("Invalid CNPJ");
         }
 
@@ -66,13 +68,5 @@ public class UserService {
         user.setInclusionDate(LocalDateTime.now());
 
         return Optional.of(repository.save(user));
-    }
-
-    private boolean isValidCPF(String cpf) {
-        return cpf != null && cpf.matches("\\d{11}");
-    }
-
-    private boolean isValidCNPJ(String cnpj) {
-        return cnpj != null && cnpj.matches("\\d{14}");
     }
 }
