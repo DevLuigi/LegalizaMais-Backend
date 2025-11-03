@@ -1,6 +1,8 @@
 package _bits.LegalizaMais.service;
 
 import _bits.LegalizaMais.domain.example.entity.Example;
+import _bits.LegalizaMais.domain.user.dto.UserLoginResponseDTO;
+import _bits.LegalizaMais.domain.user.dto.UserRequestDTO;
 import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
 import _bits.LegalizaMais.domain.user.entity.User;
 import _bits.LegalizaMais.domain.user.enumPersonType.PersonType;
@@ -68,5 +70,15 @@ public class UserService {
         user.setInclusionDate(LocalDateTime.now());
 
         return Optional.of(repository.save(user));
+    }
+
+    public UserLoginResponseDTO login(UserRequestDTO request) {
+        Optional<User> userByEmail = repository.findByEmail(request.getEmail());
+        if (userByEmail.isEmpty()) return null;
+
+        User user = userByEmail.get();
+        if (!encoder.matches(request.getPassword(), user.getPassword())) return null;
+
+        return UserLoginResponseDTO.fromUser(user);
     }
 }
