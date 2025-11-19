@@ -18,6 +18,7 @@ public class UserResponseDTO {
     private int ddd;
     private String phone;
     private String email;
+    private String password;
     private String cep;
     private int addressNumber;
     private String addressComplement;
