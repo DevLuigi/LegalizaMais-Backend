@@ -46,4 +46,10 @@ public class UserController {
                 .created(location)
                 .body(response);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserRequestDTO user) {
+        UserResponseDTO response = service.login(user);
+        return response == null ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(response);
+    }
 }
