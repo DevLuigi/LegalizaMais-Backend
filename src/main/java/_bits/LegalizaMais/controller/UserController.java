@@ -3,6 +3,7 @@ package _bits.LegalizaMais.controller;
 import _bits.LegalizaMais.domain.example.dto.ExampleRequestDTO;
 import _bits.LegalizaMais.domain.example.dto.ExampleResponseDTO;
 import _bits.LegalizaMais.domain.example.entity.Example;
+import _bits.LegalizaMais.domain.user.dto.UserLoginResponseDTO;
 import _bits.LegalizaMais.domain.user.dto.UserRequestDTO;
 import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
 import _bits.LegalizaMais.domain.user.entity.User;
@@ -49,7 +50,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserRequestDTO user) {
-        UserResponseDTO response = service.login(user);
+        UserLoginResponseDTO response = service.login(user);
         return response == null ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(response);
     }
 }
