@@ -9,6 +9,7 @@ import _bits.LegalizaMais.domain.user.entity.User;
 import _bits.LegalizaMais.exception.ExampleException;
 import _bits.LegalizaMais.service.ClientService;
 import _bits.LegalizaMais.service.UserService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,23 @@ public class ClientController {
         return ResponseEntity
                 .created(location)
                 .body(response);
+    }
+
+    @PutMapping("/{clientId}")
+    public ResponseEntity<ClientResponseDTO> updateById(@PathVariable("clientId") UUID id, @Valid @RequestBody ClientRequestDTO data) {
+        Optional<Client> user = service.updateById(id, data);
+
+        ClientResponseDTO response = ClientResponseDTO.fromClient(user.get());
+        URI location = URI.create("/client/" + response.getId());
+        return ResponseEntity
+                .created(location)
+                .body(response);
+    }
+
+    @Transactional
+    @DeleteMapping("/{clientId}")
+    public ResponseEntity<Void> deleteClient(@PathVariable("clientId") UUID clientId) {
+        boolean deleted = service.deleteClient(clientId);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 }
