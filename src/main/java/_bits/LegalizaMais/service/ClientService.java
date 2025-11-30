@@ -1,5 +1,6 @@
 package _bits.LegalizaMais.service;
 
+import _bits.LegalizaMais.domain.client.dto.ClientRequestDTO;
 import _bits.LegalizaMais.domain.client.dto.ClientResponseDTO;
 import _bits.LegalizaMais.domain.client.entity.Client;
 import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
@@ -66,4 +67,44 @@ public class ClientService {
 
         return Optional.of(repository.save(client));
     }
+
+    public Optional<Client> updateById(UUID id, ClientRequestDTO data) {
+
+        Optional<Client> optionalClient = repository.findById(id);
+        if (optionalClient.isEmpty()) return Optional.empty();
+
+        Client client = optionalClient.get();
+
+        // Validação adicional para CPF/CNPJ conforme tipo
+        if (data.getPersonType() == PersonType.FISICA && !CpfValidator.isValid(data.getDocument())) {
+            throw new ClientException("Invalid CPF");
+        }
+        if (data.getPersonType() == PersonType.JURIDICA && !CnpjValidator.isValid(data.getDocument())) {
+            throw new ClientException("Invalid CNPJ");
+        }
+
+        client.setName(data.getName());
+        client.setDocument(data.getDocument());
+        client.setPersonType(data.getPersonType());
+        client.setPhone(data.getPhone());
+        client.setDdd(data.getDdd());
+        client.setCep(data.getCep());
+        client.setAddressComplement(data.getAddressComplement());
+        client.setAddressNumber(data.getAddressNumber());
+
+        client.setChangeDate(LocalDateTime.now());
+
+        return Optional.of(repository.save(client));
+    }
+
+
+    public boolean deleteClient(UUID clientId) {
+        if (!repository.existsById(clientId)) {
+            throw new ClientException("Cliente não encontrado");
+        }
+
+        repository.deleteById(clientId);
+        return true;
+    }
+
 }
