@@ -1,14 +1,11 @@
 package _bits.LegalizaMais.service;
 
-import _bits.LegalizaMais.domain.example.entity.Example;
 import _bits.LegalizaMais.domain.user.dto.UserLoginResponseDTO;
 import _bits.LegalizaMais.domain.user.dto.UserRequestDTO;
 import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
 import _bits.LegalizaMais.domain.user.entity.User;
 import _bits.LegalizaMais.domain.user.enumPersonType.PersonType;
-import _bits.LegalizaMais.exception.ExampleException;
 import _bits.LegalizaMais.exception.UserException;
-import _bits.LegalizaMais.repository.ExampleRepository;
 import _bits.LegalizaMais.repository.UserRepository;
 import _bits.LegalizaMais.utils.CnpjValidator;
 import _bits.LegalizaMais.utils.CpfValidator;

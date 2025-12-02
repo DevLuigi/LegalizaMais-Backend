@@ -3,12 +3,9 @@ package _bits.LegalizaMais.controller;
 import _bits.LegalizaMais.domain.client.dto.ClientRequestDTO;
 import _bits.LegalizaMais.domain.client.dto.ClientResponseDTO;
 import _bits.LegalizaMais.domain.client.entity.Client;
-import _bits.LegalizaMais.domain.user.dto.UserRequestDTO;
-import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
-import _bits.LegalizaMais.domain.user.entity.User;
-import _bits.LegalizaMais.exception.ExampleException;
+import _bits.LegalizaMais.exception.ClientException;
+import _bits.LegalizaMais.exception.UserException;
 import _bits.LegalizaMais.service.ClientService;
-import _bits.LegalizaMais.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientResponseDTO> save(@Valid @RequestBody ClientRequestDTO data) {
         Optional<Client> inserted = service.save(ClientRequestDTO.newClient(data));
-        if (inserted.isEmpty()) throw new ExampleException("Couldn't insert the user");
+        if (inserted.isEmpty()) throw new ClientException("Couldn't insert the user");
 
         ClientResponseDTO response = ClientResponseDTO.fromClient(inserted.get());
         URI location = URI.create("/client/" + response.getId());
