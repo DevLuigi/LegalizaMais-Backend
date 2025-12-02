@@ -1,15 +1,13 @@
 package _bits.LegalizaMais.controller;
 
-import _bits.LegalizaMais.domain.client.dto.ClientRequestDTO;
-import _bits.LegalizaMais.domain.client.dto.ClientResponseDTO;
-import _bits.LegalizaMais.domain.client.entity.Client;
 import _bits.LegalizaMais.domain.workService.dto.WorkServiceRequestDTO;
 import _bits.LegalizaMais.domain.workService.dto.WorkServiceResponseDTO;
 import _bits.LegalizaMais.domain.workService.entity.WorkService;
-import _bits.LegalizaMais.exception.ExampleException;
+import _bits.LegalizaMais.exception.WorkServiceException;
 import _bits.LegalizaMais.service.WorkServiceService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +32,7 @@ public class WorkServiceController {
     @PostMapping
     public ResponseEntity<WorkServiceResponseDTO> save(@Valid @RequestBody WorkServiceRequestDTO data){
         Optional<WorkService> inserted = service.save(WorkServiceRequestDTO.newService(data));
-        if (inserted.isEmpty()) throw new ExampleException("Couldn't insert the service");
+        if (inserted.isEmpty()) throw new WorkServiceException("Couldn't insert the service");
 
         WorkServiceResponseDTO response = WorkServiceResponseDTO.fromService(inserted.get());
         URI location = URI.create("/service/" + response.getId());

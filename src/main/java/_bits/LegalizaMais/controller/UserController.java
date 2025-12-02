@@ -1,13 +1,10 @@
 package _bits.LegalizaMais.controller;
 
-import _bits.LegalizaMais.domain.example.dto.ExampleRequestDTO;
-import _bits.LegalizaMais.domain.example.dto.ExampleResponseDTO;
-import _bits.LegalizaMais.domain.example.entity.Example;
 import _bits.LegalizaMais.domain.user.dto.UserLoginResponseDTO;
 import _bits.LegalizaMais.domain.user.dto.UserRequestDTO;
 import _bits.LegalizaMais.domain.user.dto.UserResponseDTO;
 import _bits.LegalizaMais.domain.user.entity.User;
-import _bits.LegalizaMais.exception.ExampleException;
+import _bits.LegalizaMais.exception.UserException;
 import _bits.LegalizaMais.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +36,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO data) {
         Optional<User> inserted = service.save(UserRequestDTO.newUser(data));
-        if (inserted.isEmpty()) throw new ExampleException("Couldn't insert the user");
+        if (inserted.isEmpty()) throw new UserException("Couldn't insert the user");
 
         UserResponseDTO response = UserResponseDTO.fromUser(inserted.get());
         URI location = URI.create("/user/" + response.getId());

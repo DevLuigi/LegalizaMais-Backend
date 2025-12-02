@@ -1,6 +1,7 @@
 package _bits.LegalizaMais.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,9 +30,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(ExampleException.class)
-    public ResponseEntity<ErrorObject> handleExampleException(ExampleException ex, HttpServletRequest request) {
-        ErrorObject error = new ErrorObject(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorObject> handleGenericException(ConstraintViolationException ex, HttpServletRequest request) {
+        ErrorObject error = new ErrorObject(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
