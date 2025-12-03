@@ -31,6 +31,17 @@ public class BudgetService {
                 .collect(Collectors.toList());
     }
 
+    public List<BudgetResponseDTO> listAllBudgetsByUserId(UUID userId) {
+        return repository.findAllByUser_Id(userId)
+                .stream()
+                .map(BudgetResponseDTO::fromBudget)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<BudgetResponseDTO> findBudgetById(UUID budgetId) {
+        return repository.findById(budgetId).map(BudgetResponseDTO::fromBudget);
+    }
+
     public Optional<Budget> save(BudgetRequestDTO budget) {
         return Optional.of(repository.save(BudgetRequestDTO.newBudget(budget)));
     }
