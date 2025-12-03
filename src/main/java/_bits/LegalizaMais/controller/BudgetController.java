@@ -28,6 +28,16 @@ public class BudgetController {
         return ResponseEntity.ok().body(service.listAllBudgets());
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<BudgetResponseDTO>> listAllBudgetsByUserId(@PathVariable("userId") UUID userId) {
+        return ResponseEntity.ok().body(service.listAllBudgetsByUserId(userId));
+    }
+
+    @GetMapping("/idBudget/{budgetId}")
+    public ResponseEntity<Optional<BudgetResponseDTO>> findBudgetById(@PathVariable("budgetId") UUID userId) {
+        return ResponseEntity.ok().body(service.findBudgetById(userId));
+    }
+
     @PostMapping
     public ResponseEntity<BudgetResponseDTO> save(@Valid @RequestBody BudgetRequestDTO data) {
         Optional<Budget> inserted = service.save(data);
